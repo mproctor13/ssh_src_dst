@@ -21,7 +21,7 @@
 
 =begin
   #<
-  This definition sets up a user with ssh keys to make out bound ssh conection to ssh_dst..
+  This definition sets up a user with ssh keys to make out bound ssh conection to ssh_dst.
 
   @param src_username User on the source, the user is automatically created 
   @param src_group User group that the should be set as User's primary group

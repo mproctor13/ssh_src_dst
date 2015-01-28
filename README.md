@@ -29,18 +29,19 @@ default recipe does nothing but include to get ssh_src and ssh_dst definitions.
 
 # Definitions
 
-* [ssh_dst](#ssh_dst) - This definition sets up a user with ssh keys to allow connections from ssh_src.
-* [ssh_src](#ssh_src) - This definition sets up a user with ssh keys to make out bound ssh conection to ssh_dst..
+* [ssh_dst](#ssh_dst) - This definition sets up a user with authorized_keys to allow connections from ssh_src.
+* [ssh_src](#ssh_src) - This definition sets up a user with ssh keys to make out bound ssh conection to ssh_dst.
 
 ## ssh_dst
 
-  This definition sets up a user with ssh keys to allow connections from ssh_src.
+  This definition sets up a user with authorized_keys to allow connections from ssh_src.
 
 
 ### Parameters
 
 - dst_username: User on the destination, the user is automatically created.
 - dst_group: User group that the should be set as User's primary group.
+- dst_uid: User's uid so can set to 0 so that we can use privlaged ports.
 - finder: Proc used to find source nodes, needs to return array of ssh pubkeys.
 
 ### Examples
@@ -64,7 +65,7 @@ default recipe does nothing but include to get ssh_src and ssh_dst definitions.
       end
 ## ssh_src
 
-  This definition sets up a user with ssh keys to make out bound ssh conection to ssh_dst..
+  This definition sets up a user with ssh keys to make out bound ssh conection to ssh_dst.
 
 
 ### Parameters
