@@ -52,7 +52,7 @@
   #>
 =end
 
-define :ssh_dst do
+define :ssh_dst, :push_only => false do
   parent = params[:name]
   dst_username = params[:dst_username] ? params[:dst_username] : "#{parent}dst"
   dst_grpname = params[:dst_grpname] ? params[:dst_grpname] : "daemon"
@@ -63,8 +63,14 @@ define :ssh_dst do
   node.default[parent]['dst_user'] = dst_username
   node.default[parent]['dst_group'] = dst_grpname
 
-  if node[parent]["nologin"].nil?
-    node.set_unless[parent]["nologin"] = `which nologin`.strip  
+  if params[:push_only]
+    package "rssh"
+    ushell = "/usr/bin/rssh"
+  else
+    if node[parent]["nologin"].nil?
+      node.set_unless[parent]["nologin"] = `which nologin`.strip  
+    end
+    ushell = node[parent]["nologin"]
   end
 
   if dst_uid.nil?
@@ -76,7 +82,7 @@ define :ssh_dst do
     supports supports
     uid dst_uid unless dst_uid.nil?
     gid node[parent]['dst_group'] 
-    shell node[parent]["nologin"]
+    shell ushell
     action :create
   end
 
