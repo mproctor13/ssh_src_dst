@@ -67,12 +67,13 @@ define :ssh_dst do
     node.set_unless[parent]["nologin"] = `which nologin`.strip  
   end
 
-  non_unique = false
-  if dst_uid == 0 # using uid 0 so that can attach to privlaged ports.
-    non_unique = true 
+  if dst_uid.nil?
+    supports = {:manage_home => true}
+  else
+    supports = {:manage_home => true, :non_unique => true}
   end
   user node[parent]['dst_user'] do
-    supports :manage_home => true, :non_unique => non_unique
+    supports supports
     uid dst_uid unless dst_uid.nil?
     gid node[parent]['dst_group'] 
     shell node[parent]["nologin"]
