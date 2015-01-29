@@ -94,7 +94,6 @@ define :ssh_src do
   if params[:finder].is_a? Proc
     host_keys = params[:finder].call
   end
-  Chef::Log.error "host_keys=[#{host_keys}]"
   template "/home/#{node[parent]['src_user']}/.ssh/known_hosts" do
     cookbook cookbook
     source "known_hosts.erb"
