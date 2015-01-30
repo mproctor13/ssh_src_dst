@@ -64,8 +64,11 @@ define :ssh_dst, :push_only => false do
   node.default[parent]['dst_group'] = dst_grpname
 
   if params[:push_only]
-    package "rssh"
     ushell = "/usr/bin/rssh"
+    #include_recipe "rssh::default"
+    rssh_user node[parent]['dst_user'] do
+      options "022:100010"
+    end
   else
     if node[parent]["nologin"].nil?
       node.set_unless[parent]["nologin"] = `which nologin`.strip  
